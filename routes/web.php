@@ -29,6 +29,11 @@ Route::middleware('auth')
     Route::resource('comics', ComicController::Class);
 });
 
+Route::get('/guests', function() {
+    return view('guests.home');
+})->name('guests');
+
+
 Auth::routes();
 
 // Route::get('/home', 'HomeController@index')->name('home');
