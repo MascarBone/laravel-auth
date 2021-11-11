@@ -9,6 +9,15 @@ use Illuminate\Http\Request;
 class ComicController extends Controller
 {
     /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -26,7 +35,7 @@ class ComicController extends Controller
      */
     public function create()
     {
-        //
+        return view('admins.comics.create', ['comic'=> null]);
     }
 
     /**
@@ -37,7 +46,15 @@ class ComicController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //getting all the input's content by name
+        $data = $request->all();
+        //creating a new Comic Model
+        $newComic = Comic::create($data);
+        //saving in the database all the data, fillable in Models\Comic
+        $newComic->save();
+
+        return redirect()->route('admins.comics.show', ['comic'=>$newComic->id]);
+
     }
 
     /**
@@ -48,7 +65,8 @@ class ComicController extends Controller
      */
     public function show($id)
     {
-        //
+        $comic = Comic::findOrFail($id);
+        return view('admins.comics.show', compact('comic'));
     }
 
     /**
@@ -59,7 +77,9 @@ class ComicController extends Controller
      */
     public function edit($id)
     {
-        //
+        $comic = Comic::findOrFail($id);
+        // dd($comic);
+        return view('admins.comics.edit', compact('comic'));
     }
 
     /**
@@ -71,7 +91,12 @@ class ComicController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        // Not working??
+        Comic::find($id)->update($request->all());
+        // $newComic = Comic::findOrFail($id);
+        // $newComic->update($request->all());
+
+        return redirect()->route('admins.comics.show', ['comic'=>$id]);
     }
 
     /**

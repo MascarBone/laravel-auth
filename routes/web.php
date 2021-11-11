@@ -22,9 +22,7 @@ Route::middleware('auth')
 ->namespace('Admin')
 ->name('admins.')
 ->group(function(){
-    Route::get('/', function() {
-        return view('admins.home');
-    })->name('home');
+    Route::get('/', 'HomeController@index')->name('home');
 
     Route::resource('comics', ComicController::Class);
 });
